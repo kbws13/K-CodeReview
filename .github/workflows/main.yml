@@ -27,5 +27,5 @@ jobs:
       - name: Run Java code
         run: |
           cd K-CodeReview-SDK/src/main/java
-          javac xyz/kbws/sdk/OpenAiCodeReview.java
-          java xyz.kbws.sdk.OpenAiCodeReview
+          javac xyz/kbws/sdk/OpenCodeReview.java
+          java xyz.kbws.sdk.OpenCodeReview
