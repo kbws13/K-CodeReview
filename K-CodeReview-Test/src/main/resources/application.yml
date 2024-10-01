@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: K-CodeReview-Test-App
+  profiles:
+    active: dev
