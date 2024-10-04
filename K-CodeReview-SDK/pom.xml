@@ -89,7 +89,7 @@
                     <archive>
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <mainClass>plus.gaga.middleware.sdk.OpenAiCodeReview</mainClass>
+                            <mainClass>xyz.kbws.sdk.OpenCodeReview</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
