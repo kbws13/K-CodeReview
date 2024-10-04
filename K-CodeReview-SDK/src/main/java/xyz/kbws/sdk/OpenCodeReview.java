@@ -107,7 +107,7 @@ public class OpenCodeReview {
     private static String writeLog(String token, String log) throws Exception {
         Git git = Git.cloneRepository()
                 .setURI("https://github.com/kbws13/K-CodeReview-Log.git")
-                .setDirectory(new File("reop"))
+                .setDirectory(new File("repo"))
                 .setCredentialsProvider(new UsernamePasswordCredentialsProvider(token, ""))
                 .call();
         String dateFolderName = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
