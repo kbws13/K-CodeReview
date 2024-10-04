@@ -1,4 +1,4 @@
-package xyz.kbws.sdk.domain.model;
+package xyz.kbws.sdk.infrastructure.openai.dto;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import java.util.List;
  * @date 2024/10/4
  * @description:
  */
-public class ChatCompletionSyncResponse {
+public class ChatCompletionSyncResponseDTO {
     private List<Choice> choices;
 
     public static class Choice {

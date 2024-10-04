@@ -1,4 +1,6 @@
-package xyz.kbws.sdk.domain.model;
+package xyz.kbws.sdk.infrastructure.openai.dto;
+
+import xyz.kbws.sdk.domain.model.Model;
 
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  * @date 2024/10/4
  * @description:
  */
-public class ChatCompletionRequest {
+public class ChatCompletionRequestDTO {
     private String model = Model.GLM_4_FLASH.getCode();
     private List<Prompt> messages;
 
