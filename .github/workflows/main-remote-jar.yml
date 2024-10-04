@@ -1,12 +1,12 @@
-name: Build and Run OpenAiCodeReview By Main Maven Jar
+name: Build and Run OpenAiCodeReview By Main Remote Jar
 
 on:
   push:
     branches:
-      - master-close
+      - master
   pull_request:
     branches:
-      - master-close
+      - master
 
 jobs:
   build:
@@ -24,20 +24,20 @@ jobs:
           distribution: 'adopt'
           java-version: '8'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Create libs directory
+        run: mkdir -p ./libs
 
-      - name: Copy K-CodeReview-SDK JAR
-        run: mvn dependency:copy -Dartifact=xyz.kbws:K-CodeReview-SDK:1.0 -DoutputDirectory=./libs
+      - name: Download K-CodeReview-SDK JAR
+        run: wget -O ./libs/K-CodeReview-SDK-1.0.jar https://github.com/kbws13/K-CodeReview/releases/download/v1.0/K-CodeReview-SDK-1.0.jar
 
       - name: Get repository name
         id: repo-name
         run: echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
-#
+
       - name: Get branch name
         id: branch-name
         run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-#
+
       - name: Get commit author
         id: commit-author
         run: echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an <%ae>')" >> $GITHUB_ENV
@@ -45,13 +45,13 @@ jobs:
       - name: Get commit message
         id: commit-message
         run: echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
-#
+
       - name: Print repository, branch name, commit author, and commit message
         run: |
           echo "Repository name is ${{ env.REPO_NAME }}"
           echo "Branch name is ${{ env.BRANCH_NAME }}"
           echo "Commit author is ${{ env.COMMIT_AUTHOR }}"
-          echo "Commit message is ${{ env.COMMIT_MESSAGE }}"
+          echo "Commit message is ${{ env.COMMIT_MESSAGE }}"      
 
       - name: Run Code Review
         run: java -jar ./libs/K-CodeReview-SDK-1.0.jar
