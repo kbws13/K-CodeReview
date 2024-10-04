@@ -9,8 +9,8 @@ import java.util.Map;
  * @description:
  */
 public class Message {
-    private String touser = "or0Ab6ivwmypESVp_bYuk92T6SvU";
-    private String template_id = "GLlAM-Q4jdgsktdNd35hnEbHVam2mwsW2YWuxDhpQkU";
+    private String touser = "oBSeU6bMG1JcNKS69f95-R5lbu8U";
+    private String template_id = "Ix1TuhNjGGYLWgoboqP06mUn5yWPwAI5We9ScwbKvJw";
     private String url = "https://weixin.qq.com";
     private Map<String, Map<String, String>> data = new HashMap<>();
 

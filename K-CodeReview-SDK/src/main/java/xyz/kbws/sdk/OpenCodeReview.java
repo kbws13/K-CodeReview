@@ -6,8 +6,10 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import xyz.kbws.sdk.domain.model.ChatCompletionRequest;
 import xyz.kbws.sdk.domain.model.ChatCompletionSyncResponse;
+import xyz.kbws.sdk.domain.model.Message;
 import xyz.kbws.sdk.domain.model.Model;
 import xyz.kbws.sdk.types.utils.BearerTokenUtils;
+import xyz.kbws.sdk.types.utils.WXAccessTokenUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * @author kbws
@@ -51,7 +54,49 @@ public class OpenCodeReview {
         // 3. 写入评审日志
         String logUrl = writeLog(token, log);
         System.out.println("writeLog：" + logUrl);
+
+        // 4. 消息通知
+        System.out.println("pushMessage：" + logUrl);
+        pushMessage(logUrl);
+
     }
+
+    private static void pushMessage(String logUrl) {
+        String accessToken = WXAccessTokenUtils.getAccessToken();
+        System.out.println(accessToken);
+
+        Message message = new Message();
+        message.put("project", "CodeReview");
+        message.put("review", logUrl);
+        message.setUrl(logUrl);
+
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s", accessToken);
+        sendPostRequest(url, JSON.toJSONString(message));
+    }
+
+    private static void sendPostRequest(String urlString, String jsonBody) {
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            try (Scanner scanner = new Scanner(conn.getInputStream(), StandardCharsets.UTF_8.name())) {
+                String response = scanner.useDelimiter("\\A").next();
+                System.out.println(response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private static String codeReview(String diffCode) throws IOException {
         String apiKeySecret = "364c966589833d3514a0ab02dadb7f29.TyONa2QIVDAIEx0t";
@@ -76,7 +121,6 @@ public class OpenCodeReview {
                 add(new ChatCompletionRequest.Prompt("user", diffCode));
             }
         });
-
 
 
         try (OutputStream os = connection.getOutputStream()) {
